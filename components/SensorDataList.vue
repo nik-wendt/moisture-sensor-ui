@@ -1,31 +1,47 @@
 <template>
   <div>
     <button @click="toggleAutoRefresh">{{ autoRefresh ? 'Stop' : 'Start' }} Auto Refresh</button>
+    <p/>
+    Only Show Active:
+    <input
+        type="checkbox"
+        id="activeToggle"
+        v-model="active"
+        @change="fetchRecords"
+      />
     <table border="1" cellpadding="10" cellspacing="0">
       <thead>
         <tr>
-          <th>Sensor Name</th>
-          <th>value</th>
+          <th @click="setSort('name')" style="cursor: pointer;">
+            Sensor Name{{ getSortIndicator('name') }}
+          </th>
+          <th @click="setSort('value')" style="cursor: pointer;">
+            Value{{ getSortIndicator('value') }}
+          </th>
           <th>Status</th>
-          <th>Last Updated</th>
+          <th @click="setSort('created_at')" style="cursor: pointer;">
+            Last Updated{{ getSortIndicator('created_at') }}
+          </th>
           <th>Active</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="record in records" :key="record.id">
-          <td>
-            <nuxt-link :to="`/sensor-data/${record.sensor_id}`">{{ record.name || record.sensor_id }}</nuxt-link>
-          </td>
-          <td>{{ record.value }}</td>
-          <td>
-            <div
+      <tr v-for="record in records" :key="record.id">
+        <td>
+          <nuxt-link :to="`/sensor-data/${record.sensor_id}`">
+            {{ record.name || record.sensor_id }}
+          </nuxt-link>
+        </td>
+        <td>{{ record.value }}</td>
+        <td>
+          <div
               class="status-square"
               :style="getStatusClass(record.status)"
-            ></div>
-          </td>
-          <td>{{formattedCreatedAt(record)}}</td>
-          <td>{{ record.active }}</td>
-        </tr>
+          ></div>
+        </td>
+        <td>{{ formattedCreatedAt(record) }}</td>
+        <td>{{ record.active }}</td>
+      </tr>
       </tbody>
     </table>
     <div>
@@ -46,8 +62,11 @@ export default {
       page: 1,
       page_size: 10,
       total: 0,
-      selectedStatus: '',
-      autoRefresh: true,
+      active: true,
+      autoRefresh: false,
+      sortField: '',    // new property to track which field to sort by
+      sortOrder: 'asc', // new property to track the sort order (asc or desc)
+      interval: null,
     };
   },
   computed: {
@@ -61,9 +80,17 @@ export default {
         page: this.page,
         page_size: this.page_size,
       };
+      if (this.active) {
+        params.active = this.active;
+      }
 
       if (this.selectedStatus) {
         params.statuses = [this.selectedStatus];
+      }
+
+      if (this.sortField) {
+        params.sort_by = this.sortField;
+        params.order = this.sortOrder;
       }
 
       try {
@@ -94,19 +121,43 @@ export default {
       }
       this.autoRefresh = !this.autoRefresh;
     },
+    // Set or toggle sorting options based on the field clicked.
+    setSort(field) {
+      if (this.sortField === field) {
+        // Toggle sort order if the same field is clicked again.
+        this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+      } else {
+        // Change sort field and reset order to ascending.
+        this.sortField = field;
+        this.sortOrder = 'asc';
+      }
+      // Reset to the first page whenever sorting changes.
+      this.page = 1;
+      this.fetchRecords();
+    },
+    // Return a visual indicator (arrow) if the column is currently sorted.
+    getSortIndicator(field) {
+      if (this.sortField === field) {
+        return this.sortOrder === 'asc' ? ' ▲' : ' ▼';
+      }
+      return '';
+    },
     getStatusClass(status) {
       return {
         width: '20px',
         height: '20px',
-        backgroundColor: status
+        backgroundColor: status,
       };
     },
     formattedCreatedAt(record) {
       return moment.utc(record.created_at).local().fromNow();
-    }
+    },
   },
   mounted() {
     this.fetchRecords();
+    if (this.autoRefresh) {
+      this.interval = setInterval(this.fetchRecords, 5*60*1000);
+    }
   },
   beforeDestroy() {
     clearInterval(this.interval);
