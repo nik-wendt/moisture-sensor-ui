@@ -9,6 +9,13 @@
         v-model="active"
         @change="fetchRecords"
       />
+    <p/>
+    <input
+        type="text"
+        v-model="nameSearch"
+        placeholder="Search by name or id"
+        @input="fetchRecords"
+    />
     <table border="1" cellpadding="10" cellspacing="0">
       <thead>
         <tr>
@@ -64,6 +71,7 @@ export default {
       total: 0,
       active: true,
       autoRefresh: false,
+      nameSearch: '',
       sortField: '',    // new property to track which field to sort by
       sortOrder: 'asc', // new property to track the sort order (asc or desc)
       interval: null,
@@ -91,6 +99,10 @@ export default {
       if (this.sortField) {
         params.sort_by = this.sortField;
         params.order = this.sortOrder;
+      }
+
+      if (this.nameSearch) {
+        params.search = this.nameSearch;
       }
 
       try {
