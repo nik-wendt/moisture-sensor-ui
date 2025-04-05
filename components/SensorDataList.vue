@@ -23,13 +23,14 @@
             Sensor Name{{ getSortIndicator('name') }}
           </th>
           <th @click="setSort('value')" style="cursor: pointer;">
-            Value{{ getSortIndicator('value') }}
+            Moisture Level{{ getSortIndicator('value') }}
           </th>
           <th>Status</th>
           <th @click="setSort('created_at')" style="cursor: pointer;">
             Last Updated{{ getSortIndicator('created_at') }}
           </th>
-          <th>Active</th>
+          <th>Battery</th>
+          <th>Active</th>          
         </tr>
       </thead>
       <tbody>
@@ -39,7 +40,7 @@
             {{ record.name || record.sensor_id }}
           </nuxt-link>
         </td>
-        <td>{{ record.value }}</td>
+        <td>{{ record.value }}%</td>
         <td>
           <div
               class="status-square"
@@ -47,6 +48,7 @@
           ></div>
         </td>
         <td>{{ formattedCreatedAt(record) }}</td>
+        <td>{{ record.battery_value }}</td>
         <td>{{ record.active }}</td>
       </tr>
       </tbody>

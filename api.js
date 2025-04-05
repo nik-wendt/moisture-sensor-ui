@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-	// baseURL: "http://pi-server:8000"
-    baseURL: "http://localhost:8001"
+	baseURL: "http://pi-server:8000"
+    // baseURL: "http://localhost:8001"
 });
 
 
