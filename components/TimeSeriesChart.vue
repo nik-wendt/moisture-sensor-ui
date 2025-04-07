@@ -46,17 +46,21 @@ const createChart = () => {
           type: 'time',
           time: {
             tooltipFormat: 'PPpp',
-            unit: 'minute'
+            unit: 'minute', // base unit
+          },
+          ticks: {
+            stepSize: 30, // show label every 30 minutes
+            source: 'auto'
           },
           title: {
-            display: true,
+            display: false,
             text: 'Time'
           }
         },
         y: {
           title: {
             display: true,
-            text: 'Value'
+            text: 'Moisture Level'
           }
         }
       }

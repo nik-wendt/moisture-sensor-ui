@@ -100,16 +100,16 @@ const now = new Date()
 // Define available time range options with start_date and end_date.
 const timeRanges = [
   {
-    label: 'Last Hour',
+    label: 'Last Day',
     value: {
-      start_date: new Date(now.getTime() - 60 * 60 * 1000).toISOString(),
+      start_date: new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString(),
       end_date: now.toISOString()
     }
   },
   {
-    label: 'Last Day',
+    label: 'Last Week',
     value: {
-      start_date: new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString(),
+      start_date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
       end_date: now.toISOString()
     }
   },
@@ -127,7 +127,7 @@ const timeRanges = [
 ]
 
 // Reactive variable for the selected time range; default is All Time.
-const selectedTimeRange = ref(timeRanges[3].value)
+const selectedTimeRange = ref(timeRanges[1].value)
 
 // Fetch sensor details (including time series records) filtered by time range.
 const { data: sensorData, error, refresh } = await useAsyncData('sensorData', () =>

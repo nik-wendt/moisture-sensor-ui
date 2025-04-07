@@ -74,7 +74,7 @@ export default {
       active: true,
       autoRefresh: false,
       nameSearch: '',
-      sortField: '',    // new property to track which field to sort by
+      sortField: 'value',    // new property to track which field to sort by
       sortOrder: 'asc', // new property to track the sort order (asc or desc)
       interval: null,
     };
