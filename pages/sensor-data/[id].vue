@@ -78,6 +78,11 @@
           <textarea id="description" v-model="sensorForm.description"></textarea>
         </div>
         <button type="submit">Update Sensor</button>
+        <button
+          type="button"
+          class="delete"
+          @click="deleteSensor"
+          \>
       </form>
     </div>
   </div>
@@ -211,6 +216,18 @@ async function submitForm() {
   }
 }
 
+async function deleteSensor() {
+  try {
+    await updateSensor(id, { deleted: true })
+    alert('Sensor deleted successfully')
+    // Redirect to the sensors list page after deletion
+    window.location.href = '/'
+  } catch (err) {
+    console.error('Error deleting sensor:', err)
+    alert('Error deleting sensor')
+  }
+}
+
 // Submit handler for updating the active toggle
 async function submitActiveToggle() {
   try {
@@ -236,4 +253,10 @@ button.active {
   font-weight: bold;
   background-color: #ccc;
 }
+
+button.delete {
+    font-weight: bold;
+    background-color: #f00;
+}
 </style>
+

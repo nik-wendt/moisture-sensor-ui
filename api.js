@@ -23,3 +23,8 @@ export const updateSensor = async(id, data) => {
     const response = await api.patch(`sensor-data/${id}`, data)
     return response.data
 }
+
+export const deleteSensor = async(id) => {
+    const response = await api.delete(`sensor-data/${id}`)
+    return response.data
+}
