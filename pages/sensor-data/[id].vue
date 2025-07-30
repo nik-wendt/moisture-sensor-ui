@@ -82,7 +82,7 @@
           type="button"
           class="delete"
           @click="deleteSensor"
-          \>
+          >Delete Sensor</button>
       </form>
     </div>
   </div>
