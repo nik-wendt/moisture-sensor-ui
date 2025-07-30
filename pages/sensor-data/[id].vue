@@ -81,7 +81,7 @@
         <button
           type="button"
           class="delete"
-          @click="deleteSensor"
+          @click="delSensor"
           >Delete Sensor</button>
       </form>
     </div>
@@ -91,7 +91,7 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { getSensorDetail, updateSensor } from '~/api.js'
+import { getSensorDetail, updateSensor, deleteSensor} from '~/api.js'
 import TimeSeriesChart from '~/components/TimeSeriesChart.vue'
 import { format } from 'date-fns'
 
@@ -216,9 +216,9 @@ async function submitForm() {
   }
 }
 
-async function deleteSensor() {
+async function delSensor() {
   try {
-    await updateSensor(id, { deleted: true })
+    await deleteSensor(id)
     alert('Sensor deleted successfully')
     // Redirect to the sensors list page after deletion
     window.location.href = '/'
