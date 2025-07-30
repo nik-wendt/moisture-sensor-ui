@@ -25,6 +25,6 @@ export const updateSensor = async(id, data) => {
 }
 
 export const deleteSensor = async(id) => {
-    const response = await api.delete(`sensor-data/${id}`)
+    const response = await api.delete(`sensors/${id}`)
     return response.data
 }
