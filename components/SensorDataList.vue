@@ -16,6 +16,7 @@
         placeholder="Search by name or id"
         @input="fetchRecords"
     />
+    <div>{{total_active_sensors}}</div>
     <table border="1" cellpadding="10" cellspacing="0">
       <thead>
         <tr>
@@ -111,6 +112,8 @@ export default {
         const data = await getSensorData(params);
         this.records = data.records;
         this.total = data.total;
+        this.total_active_sensors = data.total_active_sensors;
+        this.total_sensors = data.total_sensors;
       } catch (error) {
         console.error('Error fetching records:', error);
       }
