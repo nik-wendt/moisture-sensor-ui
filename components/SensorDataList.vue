@@ -16,7 +16,7 @@
         placeholder="Search by name or id"
         @input="fetchRecords"
     />
-    <div>{{total_active_sensors}}</div>
+    <div>{{total_active_sensors}} of {{total_sensors}} active</div>
     <table border="1" cellpadding="10" cellspacing="0">
       <thead>
         <tr>
