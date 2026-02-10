@@ -72,7 +72,7 @@ export default {
       page: 1,
       page_size: 10,
       total: 0,
-      active: true,
+      active: false,
       autoRefresh: false,
       nameSearch: '',
       sortField: 'value',    // new property to track which field to sort by
@@ -134,7 +134,7 @@ export default {
       if (this.autoRefresh) {
         clearInterval(this.interval);
       } else {
-        this.interval = setInterval(this.fetchRecords, 5000);
+        this.interval = setInterval(this.fetchRecords, 30000);
       }
       this.autoRefresh = !this.autoRefresh;
     },
